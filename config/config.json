@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "postgres",
-    "password": "wiliam320332",
+    "password": "admin",
     "database": "db_putraprabu",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
-    "password": "wiliam320332",
+    "password": "admin",
     "database": "DB_putraprabu",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
     "username": "postgres",
-    "password": "wiliam320332",
+    "password": "admin",
     "database": "DB_putraprabu",
     "host": "127.0.0.1",
     "dialect": "postgres"
