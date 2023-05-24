@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "test": "jest --watchAll"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

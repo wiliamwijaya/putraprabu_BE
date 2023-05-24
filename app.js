@@ -7,8 +7,6 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const passport = require("./lib/passport");
-const swaggerJSON = require("./swagger.json");
-const swaggerUI = require("swagger-ui-express");
 const cors = require("cors");
 
 const router = require("./routes");
@@ -37,7 +35,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(router);
-app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerJSON));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
