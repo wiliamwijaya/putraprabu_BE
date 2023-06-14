@@ -61,6 +61,7 @@ exports.history = (req, res) => {
 
   Order.findAll({
     where: { user_id: id },
+    order: [["createdAt", "DESC"]],
     include: ["product", "user"],
   }).then((result) => {
     res.json({ status: "Fetch Success", result });
@@ -69,6 +70,7 @@ exports.history = (req, res) => {
 
 exports.historyadmin = (req, res) => {
   Order.findAll({
+    order: [["createdAt", "DESC"]],
     include: ["product"],
   }).then((result) => {
     res.json({ status: "Fetch Success", result });
