@@ -56,22 +56,34 @@ exports.update = (req, res) => {
   });
 };
 
-exports.cancel = (req, res) => {
+exports.cancel = async (req, res) => {
   const { id } = req.params;
 
+  // get order
+  const order = await Order.findOne({ where: { id: id } })
+  if (order === null) {
+    console.log('order not found for id :', id);
+    return
+  }
+
+  // get product
+  let productId = order.product_id
+  console.log("product id:", productId)
+  const product = await Product.findOne({ where: { id: productId } })
+  if (product === null) {
+    console.log('product not found for id :', productId);
+    return
+  }
+
   // update product stock
-  Order.findOne({ where: { id } }).then((order) => {
-    let productId = order.dataValues.product_id
-    Product.findOne({ where: { id: productId } }).then((product) => {
-      let newStock = product.stock + order.dataValues.amount
-      Product.update({ stock: newStock }, { where: { id } }).then(() => {
-        Order.update({ status: 4 }, { where: { id } }).then((result) => {
-          console.log("update order:", result)
-          res.json({ status: "Update Success", result });
-        });
-      })
-    })
-  })
+  let newStock = product.stock + order.amount
+  console.log("product id:", newStock)
+  await product.update({ stock: newStock }, { where: { id: productId } })
+
+  //update order status
+  const result = await order.update({ status: 4 }, { where: { id: id } })
+
+  res.json({ status: "Update Success", result });
 };
 
 exports.history = (req, res) => {
