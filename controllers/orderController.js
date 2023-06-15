@@ -3,7 +3,7 @@ const Op = require("sequelize").Op;
 
 exports.get = (req, res) => {
   Order.findAll({
-    where: { status: { [Op.ne]: 3 } },
+    where: { status: { [Op.in]: [1, 2] } },
     include: ["product", "user"],
   }).then((result) => {
     res.json({ status: "Fetch Success", result });
@@ -59,29 +59,24 @@ exports.update = (req, res) => {
 exports.cancel = async (req, res) => {
   const { id } = req.params;
 
-  // get order
-  const order = await Order.findOne({ where: { id: id } })
+  const order = await Order.findOne({ where: { id: id } });
   if (order === null) {
-    console.log('order not found for id :', id);
-    return
+    console.log("order not found for id :", id);
+    return;
   }
 
-  // get product
-  let productId = order.product_id
-  console.log("product id:", productId)
-  const product = await Product.findOne({ where: { id: productId } })
+  let productId = order.product_id;
+  const product = await Product.findOne({ where: { id: productId } });
   if (product === null) {
-    console.log('product not found for id :', productId);
-    return
+    console.log("product not found for id :", productId);
+    return;
   }
 
-  // update product stock
-  let newStock = product.stock + order.amount
-  console.log("product id:", newStock)
-  await product.update({ stock: newStock }, { where: { id: productId } })
+  let newStock = product.stock + order.amount;
+  console.log("product id:", newStock);
+  await product.update({ stock: newStock }, { where: { id: productId } });
 
-  //update order status
-  const result = await order.update({ status: 4 }, { where: { id: id } })
+  const result = await order.update({ status: 4 }, { where: { id: id } });
 
   res.json({ status: "Update Success", result });
 };
