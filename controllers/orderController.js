@@ -64,7 +64,7 @@ exports.cancel = (req, res) => {
   Order.findOne({ where: { id } }).then((order) => {
     let productId = order.product_id
     Product.findOne({ where: { productId } }).then((product) => {
-      let newStock = product.stock + 1
+      let newStock = product.stock + order.amount
       Product.update({ stock: newStock }, { where: { id } })
     })
   })
