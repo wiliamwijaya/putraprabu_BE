@@ -58,21 +58,19 @@ exports.update = (req, res) => {
 
 exports.cancel = (req, res) => {
   const { id } = req.params;
-  const { status } = req.body;
 
   // update product stock
   Order.findOne({ where: { id } }).then((order) => {
     let productId = order.product_id
-    Product.findOne({ where: { productId } }).then((product) => {
+    Product.findOne({ where: { id: productId } }).then((product) => {
       let newStock = product.stock + order.amount
-      Product.update({ stock: newStock }, { where: { id } })
+      Product.update({ stock: newStock }, { where: { id } }).then(() => {
+        Order.update({ status: 4 }, { where: { id } }).then((result) => {
+          res.json({ status: "Update Success", result });
+        });
+      })
     })
   })
-
-  // update order status
-  Order.update({ status: 4 }, { where: { id } }).then((result) => {
-    res.json({ status: "Update Success", result });
-  });
 };
 
 exports.history = (req, res) => {
