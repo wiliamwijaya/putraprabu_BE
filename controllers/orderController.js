@@ -61,11 +61,15 @@ exports.cancel = (req, res) => {
 
   // update product stock
   Order.findOne({ where: { id } }).then((order) => {
+    console.log("find order : ", order)
     let productId = order.product_id
     Product.findOne({ where: { id: productId } }).then((product) => {
+      console.log("find product", product)
       let newStock = product.stock + order.amount
-      Product.update({ stock: newStock }, { where: { id } }).then(() => {
+      Product.update({ stock: newStock }, { where: { id } }).then((resProduct) => {
+        console.log("update product:", resProduct)
         Order.update({ status: 4 }, { where: { id } }).then((result) => {
+          console.log("update order:", result)
           res.json({ status: "Update Success", result });
         });
       })
